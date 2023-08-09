@@ -1,0 +1,13 @@
+put:
+    #P 0 rax rsi rdi
+
+    rsi <& [rbp+16]
+    rdi <- 1
+    rax <- 1
+    rdx <- 1
+    syscall
+
+    #E rax rsi rdi
+
+start:
+put('a', 1)
