@@ -12,7 +12,7 @@ typedef struct __macro_table
     bool is_func;
 } macro_table;
 
-int preprocess(const string src, FILE *dst, FILE *err);
+int preprocess(FILE *src, FILE *dst, FILE *err);
 macro_table *gbl_tbl();
 int push_gbl_tbl();
 

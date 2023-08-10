@@ -7,20 +7,25 @@
 
 int process(FILE *src, FILE *dst, FILE *err)
 {
-    FILE *processed = fmemopen(NULL, , "r+")
-    const token_list *input = tokenize(src, err);
-    token_list *head = input;
-    while (head->next)
-    {
-        char proc_line[BUF_SIZE];
-        int line_len = 0;
-        for (int i = 0; i < head->token_count; i++)
-            line_len += strlen(head->line[i]);
-        char line[line_len];
-        for (int i = 0; i < head->token_count; i++)
-            strcat(line, head->line[i]);
-        preprocess()
-    }
+    FILE *processed = fmemopen(NULL, BUF_SIZE * 8, "r+");
+    setbuf(processed, NULL);
+    if (preprocess(src, processed, err))
+        return 1;
+    token_list *input = tokenize(processed, err);
+    if (!input)
+        return 2;
+    if (compile(input, dst, err))
+        return 3;
+    return 0;
+}
+
+void print_stream(FILE *stream)
+{
+    fseek(stream, 0, SEEK_SET);
+    char ch;
+    while ((ch = fgetc(stream)) != EOF)
+        printf("%c, ", ch);
+    printf("\n");
 }
 
 int main(int argc, char **argv)
@@ -35,11 +40,11 @@ int main(int argc, char **argv)
     char ch;
     FILE *stream;
 
-    stream = fmemopen(NULL, BUF_SIZE, "a+");
-    fprintf(stream, "testing");
-    fseek(stream, 0, SEEK_SET);
-    while ((ch = fgetc(stream)) != EOF)
-        printf("%c\n", ch);
+    stream = fmemopen(NULL, 6, "a+");
+    setbuf(stream, NULL);   // this function invocation makes it so that if more than size bytes are written to the stream, then ftell will return the correct number of bytes are written. This allows detecting insufficient stream size
+    fprintf(stream, "testing 123 this is really stupid");
+    printf("%ld\n", ftell(stream));
+    print_stream(stream);
     fclose(stream);
     return 0;
 }
