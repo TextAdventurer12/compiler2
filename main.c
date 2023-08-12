@@ -5,19 +5,19 @@
 #include "preprocess.h"
 #include <string.h>
 
-int process(FILE *src, FILE *dst, FILE *err)
-{
-    FILE *processed = fmemopen(NULL, BUF_SIZE * 8, "r+");
-    setbuf(processed, NULL);
-    if (preprocess(src, processed, err))
-        return 1;
-    token_list *input = tokenize(processed, err);
-    if (!input)
-        return 2;
-    if (compile(input, dst, err))
-        return 3;
-    return 0;
-}
+// int process(FILE *src, FILE *dst, FILE *err)
+// {
+//     FILE *processed = fmemopen(NULL, BUF_SIZE * 8, "r+");
+//     setbuf(processed, NULL);
+//     if (preprocess(src, processed, err))
+//         return 1;
+//     token_list *input = tokenize(processed, err);
+//     if (!input)
+//         return 2;
+//     if (compile(input, dst, err))
+//         return 3;
+//     return 0;
+// }
 
 void print_stream(FILE *stream)
 {

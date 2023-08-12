@@ -1,2 +1,2 @@
-gcc *.c -o proj
+gcc *.c -o proj -lm
 ./proj tst.psm tst.asm err.log
